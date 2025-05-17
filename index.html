@@ -7,27 +7,28 @@
     <title>Juego JS</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="bootstrap.min.css">
 </head>
 
 <body>
 
-    <section id="vista-inicio"><!--VISTA INICIO-->
-        <h2>Welcome to the JavaScript Quiz!</h2>
-        <button id="start-quiz">Go to Quiz</button>
+    <section id="vista-inicio" class="center-wrapper"><!--VISTA INICIO-->
+        <h2 class="text-success">Welcome to the JavaScript Quiz!</h2>
+        <button id="start-quiz" class="btn btn-outline-primary">Go to Quiz</button>
     </section>
 
-    <section id="vista-quiz" class="hide"><!--VISTA QUIZ-->
-        <h1> Quiz JS</h1>
-        <h2>Juego de preguntas y respuestas múltiples</h2>
-        <button id="volver-inicio">Volver al Inicio</button>
+    <section id="vista-quiz" class="center-wrapper d-none"><!--VISTA QUIZ-->
+        <h1 id="quiztitle" class="text-primary"> Quiz JS</h1>
+        <h1 class="text-light">Juego de preguntas y respuestas múltiples</h1>
+        <button id="volver-inicio" class="btn btn-outline-light">Volver al Inicio</button>
         <div id="question-container">
-            <div id="question">Question</div> <!-- pintamos pregunta-->
+            <div id="question"> </div> <!-- pintamos pregunta--hemos dejado el nombre vacío --> 
             <div id="answer-buttons"></div><!-- pintamos respuestas-->
         </div>
 
         <div class="controls">
-            <button id="start-btn">Start</button-id> <!-- botón Start-->
-                <button id="next-btn">Next</button> <!-- botón Next-->
+            <button id="start-btn" class="btn btn-primary btn-lg">Start</button> <!-- botón Start--><br><br>
+                <button id="next-btn" class="btn btn-primary btn-lg">Next</button> <!-- botón Next-->
         </div>
     </section>
 </body>

@@ -1,3 +1,33 @@
-.hide {
+/* .hide {
     display:none;
+}
+ */
+#vista-inicio, #start-quiz {
+    text-align: center; 
+    justify-content: center;
+    align-items: center;
+    place-items: center;
+    margin:140px;
+}   
+    
+#vista-quiz {
+    border: 2px solid #2aa198;--bs-teal;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom:20px;
+    
+}
+    
+
+ #vista-quiz, #volver-inicio {
+    
+    align-items: center;
+    text-align: center; 
+    justify-content: center;
+    place-items: center;
+    margin:100px;
+}
+
+#quiztitle {
+    font-size: 36; !important;
 }

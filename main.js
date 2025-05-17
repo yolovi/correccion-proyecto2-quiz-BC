@@ -18,19 +18,32 @@ const API_URL = "https://opentdb.com/api.php?amount=10&category=11&difficulty=ea
 
 //funciones y addEventListener de vista-inicio y vista-quiz
 function mostrarQuiz() {
-  vistaInicio.classList.add("hide");
-  buttonStartQuiz.classList.add("hide");
-  vistaQuiz.classList.remove("hide");
-  buttonVolverInicio.classList.remove("hide");
-  nextButton.classList.add("hide");
+  vistaInicio.classList.add("d-none");
+  buttonStartQuiz.classList.add("d-none");
+  vistaQuiz.classList.remove("d-none");
+  buttonVolverInicio.classList.remove("d-none");
+  nextButton.classList.add("d-none");
 }
 
 function mostrarInicio() {
-vistaQuiz.classList.add("hide");
-buttonVolverInicio.classList.add("hide");
-vistaInicio.classList.remove("hide");
-buttonStartQuiz.classList.remove("hide");
+vistaQuiz.classList.add("d-none");
+buttonVolverInicio.classList.add("d-none");
+vistaInicio.classList.remove("d-none");
+buttonStartQuiz.classList.remove("d-none");
+reiniciarQuiz();
 }
+
+function reiniciarQuiz() {
+  currentQuestionIndex = 0;
+  preguntas = [];
+  questionElement.innerHTML = "";
+  answerButtonsElement.innerHTML = "";
+  nextButton.classList.add("d-none");
+  startButton.classList.remove("d-none");
+  questionContainerElement.classList.add("d-none");
+}
+
+
 
 buttonStartQuiz.addEventListener("click", mostrarQuiz);
 buttonVolverInicio.addEventListener("click", mostrarInicio)
@@ -53,8 +66,8 @@ let preguntas = [] //almacenamos las preguntas
   }
 
  startButton.addEventListener("click", () => {
-    startButton.classList.add("hide");
-    questionContainerElement.classList.remove("hide");
+    startButton.classList.add("d-none");
+    questionContainerElement.classList.remove("d-none");
     getAPIInfo();
     
   })
@@ -85,7 +98,7 @@ const cargarPreguntaYRespuestas = (pregunta) => { //le pasamos a la función un 
     
     const button = document.createElement("button");
     button.innerText = respuesta;
-    button.classList.add("btn");
+    button.classList.add("btn", "btn-outline-secondary", "my-4", "respuesta-quiz"); //añadimos clases a cada uno de los botones de respuesta
 
     if (respuesta === pregunta.correct_answer) {
       button.dataset.correct = "true";
@@ -95,7 +108,7 @@ const cargarPreguntaYRespuestas = (pregunta) => { //le pasamos a la función un 
     answerButtonsElement.appendChild(button);
   });
 
-  nextButton.classList.add("hide");
+  nextButton.classList.add("d-none");
 }
 
 // Verifica si la respuesta es correcta y muestra feedback
@@ -116,6 +129,6 @@ function seleccionarRespuesta(e) {
     button.disabled = true;
   });
 
-  nextButton.classList.remove("hide");
+  nextButton.classList.remove("d-none");
 }
   
