@@ -11,13 +11,14 @@
 }   
     
 #vista-quiz {
-    border: 2px solid #2aa198;--bs-teal;
+    border: 4px solid #2aa198;--bs-teal;
     padding: 25px;
     border-radius: 8px;
     margin-bottom:20px;
     
 }
-    
+
+
 
  #vista-quiz, #volver-inicio {
     

@@ -4,6 +4,7 @@ const nextButton = document.getElementById("next-btn");
 const questionContainerElement = document.getElementById("question-container");
 const questionElement = document.getElementById("question");
 const answerButtonsElement = document.getElementById("answer-buttons");
+const alerta = document.getElementById("alerta")
 
 
 //constantes de la vista-inicio y la vista-quiz
@@ -41,8 +42,8 @@ function reiniciarQuiz() {
   nextButton.classList.add("d-none");
   startButton.classList.remove("d-none");
   questionContainerElement.classList.add("d-none");
+  alerta.classList.add("d-none");
 }
-
 
 
 buttonStartQuiz.addEventListener("click", mostrarQuiz);
@@ -72,12 +73,18 @@ let preguntas = [] //almacenamos las preguntas
     
   })
 
+  
+function mostrarAlerta() {
+  alerta.classList.remove("d-none");
+}
+
+
   nextButton.addEventListener("click", () => {
     currentQuestionIndex++; //se mueve una posición el contador de preguntas
       if(currentQuestionIndex < preguntas.length) {
     cargarPreguntaYRespuestas(preguntas[currentQuestionIndex]);
   } else {
-    alert("!BIEN JUGADO!");
+    mostrarAlerta(); //mostrar alerta de Well done!
     
   }
 });
@@ -131,4 +138,6 @@ function seleccionarRespuesta(e) {
 
   nextButton.classList.remove("d-none");
 }
+
+
   

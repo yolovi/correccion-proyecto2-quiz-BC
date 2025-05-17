@@ -8,27 +8,37 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
 </head>
 
 <body>
 
     <section id="vista-inicio" class="center-wrapper"><!--VISTA INICIO-->
-        <h2 class="text-success">Welcome to the JavaScript Quiz!</h2>
+        <h1 class="text-success">Welcome to the Film Quiz!</h1>
+        <script src="https://cdn.lordicon.com/lordicon.js"></script><br><br>
+        <lord-icon src="https://cdn.lordicon.com/gfnscnje.json" trigger="hover" style="width:200px;height:200px">
+        </lord-icon>
         <button id="start-quiz" class="btn btn-outline-primary">Go to Quiz</button>
     </section>
 
     <section id="vista-quiz" class="center-wrapper d-none"><!--VISTA QUIZ-->
-        <h1 id="quiztitle" class="text-primary"> Quiz JS</h1>
+        <h1 id="quiztitle" class="text-primary">It's Quiz Time...</h1>
         <h1 class="text-light">Juego de preguntas y respuestas múltiples</h1>
+        <script src="https://cdn.lordicon.com/lordicon.js"></script>
+        <lord-icon src="https://cdn.lordicon.com/eryhewww.json" trigger="hover" style="width:200px;height:200px">
+        </lord-icon><br>
         <button id="volver-inicio" class="btn btn-outline-light">Volver al Inicio</button>
         <div id="question-container">
-            <div id="question"> </div> <!-- pintamos pregunta--hemos dejado el nombre vacío --> 
+            <div id="question"> </div> <!-- pintamos pregunta--hemos dejado el nombre vacío -->
             <div id="answer-buttons"></div><!-- pintamos respuestas-->
         </div>
-
+        <div id="alerta" class="alert alert-dismissible alert-light d-none">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>Well done!</strong> You successfully completed this quizz.</a>
+        </div>
         <div class="controls">
             <button id="start-btn" class="btn btn-primary btn-lg">Start</button> <!-- botón Start--><br><br>
-                <button id="next-btn" class="btn btn-primary btn-lg">Next</button> <!-- botón Next-->
+            <button id="next-btn" class="btn btn-primary btn-lg">Next</button> <!-- botón Next-->
         </div>
     </section>
 </body>
