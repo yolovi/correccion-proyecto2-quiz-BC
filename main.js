@@ -4,11 +4,36 @@ const nextButton = document.getElementById("next-btn");
 const questionContainerElement = document.getElementById("question-container");
 const questionElement = document.getElementById("question");
 const answerButtonsElement = document.getElementById("answer-buttons");
-/* 
 
 
-//Guardadmos la API en una constante
-/* const API_URL = "https://opentdb.com/api.php?amount=10&category=11&difficulty=easy&type=multiple" */
+//constantes de la vista-inicio y la vista-quiz
+const vistaInicio = document.getElementById("vista-inicio");
+const buttonStartQuiz = document.getElementById("start-quiz");
+const vistaQuiz = document.getElementById("vista-quiz")
+const buttonVolverInicio = document.getElementById("volver-inicio");
+
+
+/*Guardadmos la API en una constante
+const API_URL = "https://opentdb.com/api.php?amount=10&category=11&difficulty=easy&type=multiple" */
+
+//funciones y addEventListener de vista-inicio y vista-quiz
+function mostrarQuiz() {
+  vistaInicio.classList.add("hide");
+  buttonStartQuiz.classList.add("hide");
+  vistaQuiz.classList.remove("hide");
+  buttonVolverInicio.classList.remove("hide");
+  nextButton.classList.add("hide");
+}
+
+function mostrarInicio() {
+vistaQuiz.classList.add("hide");
+buttonVolverInicio.classList.add("hide");
+vistaInicio.classList.remove("hide");
+buttonStartQuiz.classList.remove("hide");
+}
+
+buttonStartQuiz.addEventListener("click", mostrarQuiz);
+buttonVolverInicio.addEventListener("click", mostrarInicio)
 
 
 let currentQuestionIndex = 0;
@@ -51,14 +76,13 @@ const cargarPreguntaYRespuestas = (pregunta) => { //le pasamos a la función un 
 
 
   // Combina y mezcla las respuestas
-  const respuestas = pregunta.incorrect_answers.concat(pregunta.correct_answer);
+  const respuestas = pregunta.incorrect_answers.concat(pregunta.correct_answer); //const respuestas genera un array
   respuestas.sort(() => Math.random() - 0.5); //(encontrado investigando - por confirmar si funciona)
   //Math.random genera número aleatorio entre el rango [0-1[ , resta -0,5 con lo cual el rango es positivo o negativo, lo cual permite a sort
   //reordenar aleatoriamente
 
   respuestas.forEach((respuesta) => {
-    if (!respuesta) return; // evita respuestas undefined. Si la respuesta es falsa, se salta esa iteración
-
+    
     const button = document.createElement("button");
     button.innerText = respuesta;
     button.classList.add("btn");
@@ -74,7 +98,7 @@ const cargarPreguntaYRespuestas = (pregunta) => { //le pasamos a la función un 
   nextButton.classList.add("hide");
 }
 
-// ✅ Verifica si la respuesta es correcta y muestra feedback
+// Verifica si la respuesta es correcta y muestra feedback
 function seleccionarRespuesta(e) {
   const selectedButton = e.target;
   const correct = selectedButton.dataset.correct === "true";
