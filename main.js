@@ -4,95 +4,94 @@ const nextButton = document.getElementById("next-btn");
 const questionContainerElement = document.getElementById("question-container");
 const questionElement = document.getElementById("question");
 const answerButtonsElement = document.getElementById("answer-buttons");
+/* 
 
-const questions = [
-  {
-    question: "What is 2 + 2?",
-    answers: [
-      { text: "4", correct: true },
-      { text: "22", correct: false },
-    ],
-  },
-  {
-    question: "Is web development fun?",
-    answers: [
-      { text: "Kinda", correct: false },
-      { text: "YES!!!", correct: true },
-      { text: "Um no", correct: false },
-      { text: "IDK", correct: false },
-    ],
-  },
-  {
-    question: "What is 4 * 2?",
-    answers: [
-      { text: "6", correct: false },
-      { text: "8", correct: true },
-      { text: "Yes", correct: false },
-    ],
-  },
-];
 
-//EMPIEZA EL JUEGO - START -
-let currentQuestionIndex;
-function startGame() {
-    startButton.classList.add("hide")
-    currentQuestionIndex = 0;
+//Guardadmos la API en una constante
+/* const API_URL = "https://opentdb.com/api.php?amount=10&category=11&difficulty=easy&type=multiple" */
+
+
+let currentQuestionIndex = 0;
+let preguntas = [] //almacenamos las preguntas
+
+  //Petición a la API con axios (devuelve promesa aunque no se vea). Manejo de la respuesta de la promesa con async/await:
+  async function getAPIInfo() {
+      try {
+      const datosApi = await axios.get("https://opentdb.com/api.php?amount=10&category=11&difficulty=easy&type=multiple")
+      preguntas = datosApi.data.results; //preguntas aquí es una categoría/cajita donde se guardan las preguntas y respuestas 
+      currentQuestionIndex = 0; //primera pregunta
+     /*  console.log(datosApi); */
+      cargarPreguntaYRespuestas (preguntas[currentQuestionIndex])
+      } catch (error) {
+        console.error("Error", error);
+      }
+  }
+
+ startButton.addEventListener("click", () => {
+    startButton.classList.add("hide");
     questionContainerElement.classList.remove("hide");
-    setNextQuestion();
-}
+    getAPIInfo();
+    
+  })
 
-startButton.addEventListener("click", startGame);
-
-//MUESTRA LA PREGUNTA
-function showQuestion (preguntaConcurso) {
-    questionElement.innerText = preguntaConcurso.question;
-    preguntaConcurso.answers.forEach(answer => { //recorremos todas las respuestas
-        const button = document.createElement("button");
-        button.innerText = answer.text;
-        if (answer.correct) {
-            button.dataset.correct = true;
-        }
-        button.addEventListener("click", selectAnswer);
-        answerButtonsElement.appendChild(button); //se agrega el botón al contenedor de respuestas
-    })
-}
-
-//INDEXAMOS LAS PREGUNTAS PARA SABER CUÁNDO 'NEXT' Y CUÁNDO 'RESTART'
-function setNextQuestion() {
-    resetState();
-    showQuestion(questions[currentQuestionIndex]);
-}
-
-//ESTABLECEMOS SI ELEMENTO CLICKADO ES CORRECTO
-function setStatusClass(element) {
-    if (element.dataset.correct) { //ver en HTML, los atributos data-* permiten almacenar info personalizada. 
-    // Accedemos al valor de data-correct.
-        element.classList.add("correct");
-    } else {
-    element.classList.add ("wrong")
-    }
-}
-
-function selectAnswer() {
-    Array.from(answerButtonsElement.children).forEach(button => { //recorremos botones de respuesta. Convertimos HTML Collection en un 
-       // array para poder usar forEach
-        setStatusClass(button);
-    })
-    if (questions.length > currentQuestionIndex + 1) { //si hay 8 preguntas, hasta la 7 nos saldrá el "next"
-        nextButton.classList.remove("hide") //muestra "next"
-    } else {
-    startButton.innerText = "Restart";
-    startButton.classList.remove("hide") //muestra "restart"
-    }
-}
-
-nextButton.addEventListener("click",() => { //cuando clickas "next" sumas uno al contador de preguntas y ejecutas setNext Question
-    currentQuestionIndex++;
-    setNextQuestion();
+  nextButton.addEventListener("click", () => {
+    currentQuestionIndex++; //se mueve una posición el contador de preguntas
+      if(currentQuestionIndex < preguntas.length) {
+    cargarPreguntaYRespuestas(preguntas[currentQuestionIndex]);
+  } else {
+    alert("!BIEN JUGADO!");
+    
+  }
 });
 
-function resetState(){
-    nextButton.classList.add("hide"); //borramos las respuestas escritas
-    answerButtonsElement.innerHTML="" //borramos todo el contenido HTML interno del elemento
+  // Mostrar preguntas y respuestas
+const cargarPreguntaYRespuestas = (pregunta) => { //le pasamos a la función un parámetro "pregunta" que es el objeto que contiene los datos de la API
+  questionElement.innerHTML = pregunta.question; //muestra pregunta en pantalla. Accedemos al campo question de cada objeto individual.
+  answerButtonsElement.innerHTML = ""; // limpia respuestas anteriores
+
+
+  // Combina y mezcla las respuestas
+  const respuestas = pregunta.incorrect_answers.concat(pregunta.correct_answer);
+  respuestas.sort(() => Math.random() - 0.5); //(encontrado investigando - por confirmar si funciona)
+  //Math.random genera número aleatorio entre el rango [0-1[ , resta -0,5 con lo cual el rango es positivo o negativo, lo cual permite a sort
+  //reordenar aleatoriamente
+
+  respuestas.forEach((respuesta) => {
+    if (!respuesta) return; // evita respuestas undefined. Si la respuesta es falsa, se salta esa iteración
+
+    const button = document.createElement("button");
+    button.innerText = respuesta;
+    button.classList.add("btn");
+
+    if (respuesta === pregunta.correct_answer) {
+      button.dataset.correct = "true";
+    }
+
+    button.addEventListener("click", seleccionarRespuesta);
+    answerButtonsElement.appendChild(button);
+  });
+
+  nextButton.classList.add("hide");
 }
 
+// ✅ Verifica si la respuesta es correcta y muestra feedback
+function seleccionarRespuesta(e) {
+  const selectedButton = e.target;
+  const correct = selectedButton.dataset.correct === "true";
+
+  if (correct) {
+    selectedButton.style.backgroundColor = "green";
+  } else {
+    selectedButton.style.backgroundColor = "red";
+  }
+
+  Array.from(answerButtonsElement.children).forEach(button => {
+    if (button.dataset.correct === "true") {
+      button.style.border = "2px solid green";
+    }
+    button.disabled = true;
+  });
+
+  nextButton.classList.remove("hide");
+}
+  
