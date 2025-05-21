@@ -27,11 +27,11 @@ function mostrarQuiz() {
 }
 
 function mostrarInicio() {
-vistaQuiz.classList.add("d-none");
-buttonVolverInicio.classList.add("d-none");
-vistaInicio.classList.remove("d-none");
-buttonStartQuiz.classList.remove("d-none");
-reiniciarQuiz();
+  vistaQuiz.classList.add("d-none");
+  buttonVolverInicio.classList.add("d-none");
+  vistaInicio.classList.remove("d-none");
+  buttonStartQuiz.classList.remove("d-none");
+  reiniciarQuiz();
 }
 
 function reiniciarQuiz() {
@@ -53,43 +53,44 @@ buttonVolverInicio.addEventListener("click", mostrarInicio)
 let currentQuestionIndex = 0;
 let preguntas = [] //almacenamos las preguntas
 
-  //Petición a la API con axios (devuelve promesa aunque no se vea). Manejo de la respuesta de la promesa con async/await:
-  async function getAPIInfo() {
-      try {
-      const datosApi = await axios.get("https://opentdb.com/api.php?amount=10&category=11&difficulty=easy&type=multiple")
-      preguntas = datosApi.data.results; //preguntas aquí es una categoría/cajita donde se guardan las preguntas y respuestas 
-      currentQuestionIndex = 0; //primera pregunta
-     /*  console.log(datosApi); */
-      cargarPreguntaYRespuestas (preguntas[currentQuestionIndex])
-      } catch (error) {
-        console.error("Error", error);
-      }
+//Petición a la API con axios (devuelve promesa aunque no se vea). Manejo de la respuesta de la promesa con async/await:
+async function getAPIInfo() {
+  try {
+    const datosApi = await axios.get("https://opentdb.com/api.php?amount=10&category=11&difficulty=easy&type=multiple")
+    preguntas = datosApi.data.results; //preguntas aquí es una categoría/cajita donde se guardan las preguntas y respuestas 
+    currentQuestionIndex = 0; //primera pregunta
+    /*  console.log(datosApi); */
+    cargarPreguntaYRespuestas(preguntas[currentQuestionIndex])
+  } catch (error) {
+    console.error("Error", error);
   }
+}
 
- startButton.addEventListener("click", () => {
-    startButton.classList.add("d-none");
-    questionContainerElement.classList.remove("d-none");
-    getAPIInfo();
-    
-  })
+//Asociar el botón start a función que hace la llamada a la API
+startButton.addEventListener("click", () => {
+  startButton.classList.add("d-none");
+  questionContainerElement.classList.remove("d-none");
+  getAPIInfo();
 
-  
+})
+
+//Creamos función mostrarAlerta para desocultar la alerta (está oculta durante todo el quiz)
 function mostrarAlerta() {
   alerta.classList.remove("d-none");
 }
 
-
-  nextButton.addEventListener("click", () => {
-    currentQuestionIndex++; //se mueve una posición el contador de preguntas
-      if(currentQuestionIndex < preguntas.length) {
+//Vinculamos el "next" button con la siguiente posición del índice de preguntas (excepto en la última posición/pregunta -> alerta)
+nextButton.addEventListener("click", () => {
+  currentQuestionIndex++; //se mueve una posición el contador de preguntas
+  if (currentQuestionIndex < preguntas.length) {
     cargarPreguntaYRespuestas(preguntas[currentQuestionIndex]);
   } else {
     mostrarAlerta(); //mostrar alerta de Well done!
-    
+
   }
 });
 
-  // Mostrar preguntas y respuestas
+// Creamos variable para guardar preguntas y respuestas
 const cargarPreguntaYRespuestas = (pregunta) => { //le pasamos a la función un parámetro "pregunta" que es el objeto que contiene los datos de la API
   questionElement.innerHTML = pregunta.question; //muestra pregunta en pantalla. Accedemos al campo question de cada objeto individual.
   answerButtonsElement.innerHTML = ""; // limpia respuestas anteriores
@@ -101,8 +102,9 @@ const cargarPreguntaYRespuestas = (pregunta) => { //le pasamos a la función un 
   //Math.random genera número aleatorio entre el rango [0-1[ , resta -0,5 con lo cual el rango es positivo o negativo, lo cual permite a sort
   //reordenar aleatoriamente
 
+  //vamos entrando en cada una de las respuestas para pintarlas, crear un botón para cada una
   respuestas.forEach((respuesta) => {
-    
+
     const button = document.createElement("button");
     button.innerText = respuesta;
     button.classList.add("btn", "btn-outline-secondary", "my-4", "respuesta-quiz"); //añadimos clases a cada uno de los botones de respuesta
@@ -118,9 +120,9 @@ const cargarPreguntaYRespuestas = (pregunta) => { //le pasamos a la función un 
   nextButton.classList.add("d-none");
 }
 
-// Verifica si la respuesta es correcta y muestra feedback
+// Verifica si la respuesta es correcta o incorrecta
 function seleccionarRespuesta(e) {
-  const selectedButton = e.target;
+  const selectedButton = e.target; //e.target es el elemento HTML exacto que disparó el evento
   const correct = selectedButton.dataset.correct === "true";
 
   if (correct) {
@@ -140,4 +142,4 @@ function seleccionarRespuesta(e) {
 }
 
 
-  
+
