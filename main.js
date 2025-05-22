@@ -66,6 +66,12 @@ async function getAPIInfo() {
   }
 }
 
+// Creamos variable para guardar preguntas y respuestas
+const cargarPreguntaYRespuestas = (pregunta) => { //le pasamos a la función un parámetro "pregunta" que es el objeto que contiene los datos de la API
+  questionElement.innerHTML = pregunta.question; //muestra pregunta en pantalla. Accedemos al campo question de cada objeto individual.
+  answerButtonsElement.innerHTML = ""; // limpia respuestas anteriores
+
+
 //Asociar el botón start a función que hace la llamada a la API
 startButton.addEventListener("click", () => {
   startButton.classList.add("d-none");
@@ -79,6 +85,7 @@ function mostrarAlerta() {
   alerta.classList.remove("d-none");
 }
 
+
 //Vinculamos el "next" button con la siguiente posición del índice de preguntas (excepto en la última posición/pregunta -> alerta)
 nextButton.addEventListener("click", () => {
   currentQuestionIndex++; //se mueve una posición el contador de preguntas
@@ -86,37 +93,26 @@ nextButton.addEventListener("click", () => {
     cargarPreguntaYRespuestas(preguntas[currentQuestionIndex]);
   } else {
     mostrarAlerta(); //mostrar alerta de Well done!
-
   }
 });
 
-// Creamos variable para guardar preguntas y respuestas
-const cargarPreguntaYRespuestas = (pregunta) => { //le pasamos a la función un parámetro "pregunta" que es el objeto que contiene los datos de la API
-  questionElement.innerHTML = pregunta.question; //muestra pregunta en pantalla. Accedemos al campo question de cada objeto individual.
-  answerButtonsElement.innerHTML = ""; // limpia respuestas anteriores
-
-
   // Combina y mezcla las respuestas
   const respuestas = pregunta.incorrect_answers.concat(pregunta.correct_answer); //const respuestas genera un array
-  respuestas.sort(() => Math.random() - 0.5); //(encontrado investigando - por confirmar si funciona)
+  respuestas.sort(() => Math.random() - 0.5); 
   //Math.random genera número aleatorio entre el rango [0-1[ , resta -0,5 con lo cual el rango es positivo o negativo, lo cual permite a sort
   //reordenar aleatoriamente
 
   //vamos entrando en cada una de las respuestas para pintarlas, crear un botón para cada una
   respuestas.forEach((respuesta) => {
-
     const button = document.createElement("button");
     button.innerText = respuesta;
     button.classList.add("btn", "btn-outline-secondary", "my-4", "respuesta-quiz"); //añadimos clases a cada uno de los botones de respuesta
-
     if (respuesta === pregunta.correct_answer) {
       button.dataset.correct = "true";
     }
-
     button.addEventListener("click", seleccionarRespuesta);
     answerButtonsElement.appendChild(button);
   });
-
   nextButton.classList.add("d-none");
 }
 
@@ -124,13 +120,11 @@ const cargarPreguntaYRespuestas = (pregunta) => { //le pasamos a la función un 
 function seleccionarRespuesta(e) {
   const selectedButton = e.target; //e.target es el elemento HTML exacto que disparó el evento
   const correct = selectedButton.dataset.correct === "true";
-
   if (correct) {
     selectedButton.style.backgroundColor = "green";
   } else {
     selectedButton.style.backgroundColor = "red";
   }
-
   Array.from(answerButtonsElement.children).forEach(button => {
     if (button.dataset.correct === "true") {
       button.style.border = "2px solid green";
