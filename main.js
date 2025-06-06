@@ -13,10 +13,23 @@ const buttonStartQuiz = document.getElementById("start-quiz");
 const vistaQuiz = document.getElementById("vista-quiz")
 const buttonVolverInicio = document.getElementById("volver-inicio");
 
+/**
+ * CORRECCION:
+ *  esta API_URL no es escalable, en este ejercicio te vale al ser muy sencillo.
+ *  Pero ten presente que la forma adecuada sería tener en una constante la base de la Url y después añadir lo que se vaya necesitando:
+ * API_URL_BASE = "https://opentdb.com/api.php?"
+ * Y antes de usarlo desde cualquier punto de la aplicación crearíamos la url adecuada
+ * const cantidad = 10; tipo = "multiple";
+ * const apiUrl = `${API_URL_BASE}amount=${cantidad}&type=${tipo}`;
+ */ 
 
 /*Guardadmos la API en una constante
 const API_URL = "https://opentdb.com/api.php?amount=10&category=11&difficulty=easy&type=multiple" */
 
+/**
+ * CORRECCION:
+ * el orden es: elementos DOM, variables, eventos y funciones.
+ */ 
 //funciones y addEventListener de vista-inicio y vista-quiz
 function mostrarQuiz() {
   vistaInicio.classList.add("d-none");
@@ -45,7 +58,10 @@ function reiniciarQuiz() {
   alerta.classList.add("d-none");
 }
 
-
+/**
+ * CORRECCION:
+ * no damos un evento a cada elemento. Utilizamos la delegación de eventos: damos el evento a un elemento común (normalmente el body) y después en el evento comprobamos quien lo disparó
+ */ 
 buttonStartQuiz.addEventListener("click", mostrarQuiz);
 buttonVolverInicio.addEventListener("click", mostrarInicio)
 
@@ -53,6 +69,12 @@ buttonVolverInicio.addEventListener("click", mostrarInicio)
 let currentQuestionIndex = 0;
 let preguntas = [] //almacenamos las preguntas
 
+/**
+ * CORRECCION:
+ * en esta funcion no nos interesa hacer nada que no sea llamar a la api: haces la llamada, recibes datos, devuelves datos con un return.
+ * Una vez has devuelto los datos, desde donde llamaste a esta funcion ya harás lo que quieras y llamarás a las funciones que quieras,
+ * pero desde dentro no llamas a la ejecucion de otras funciones.
+ */ 
 //Petición a la API con axios (devuelve promesa aunque no se vea). Manejo de la respuesta de la promesa con async/await:
 async function getAPIInfo() {
   try {
@@ -71,9 +93,14 @@ const cargarPreguntaYRespuestas = (pregunta) => { //le pasamos a la función un 
   questionElement.innerHTML = pregunta.question; //muestra pregunta en pantalla. Accedemos al campo question de cada objeto individual.
   answerButtonsElement.innerHTML = ""; // limpia respuestas anteriores
 
-
+/**
+ * CORRECCION:
+ *  no has cerrado la funcion anterior, por lo que este evento lo tienes dentro de ella y es el evnto que llama a la funcion
+ *  que a su vez llama a la funcion anterior. Sé más ordenado para evitar este tipo de cosas.s
+ */ 
 //Asociar el botón start a función que hace la llamada a la API
-startButton.addEventListener("click", () => {
+startButton.addEventListener("click", async() => {
+  console.log('desde el evento')
   startButton.classList.add("d-none");
   questionContainerElement.classList.remove("d-none");
   getAPIInfo();

@@ -9,7 +9,11 @@
     place-items: center;
     margin:140px;
 }   
-    
+    /*
+    CORRECCION:
+        Imagino que querías cambiar el color por --bs-teal, pero lo has dejado a medias. Ten cuidado con este tipo de cosas,
+        ser organizado con los commits y branches puede ayudarte en ese aspecto.
+    */
 #vista-quiz {
     border: 4px solid #2aa198;--bs-teal;
     padding: 25px;
@@ -28,7 +32,10 @@
     place-items: center;
     margin:100px;
 }
-
+/* CORRECCION:
+    el ';' lo ponemos al final del valor, !important es parte del valor por lo que solo ponemos ; al final de este
+    falta la unidad del font-size, y por el valor tiene pinta de ser px. No usamos medidas absolutas(px) sino relativas(%, em, rem)
+    */
 #quiztitle {
     font-size: 36; !important;
 }

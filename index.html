@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juego JS</title>
+    <!-- CORRECCION:
+        agrupa los stylesheet y los script, vamos a mantener las cosas ordenadas. 
+        Nuestra hoja de estilos irá la última para que no de problemas a la hora de leerlo  
+    -->
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="bootstrap.min.css">
@@ -12,7 +16,12 @@
 </head>
 
 <body>
-
+    <!-- CORRECCION:
+        Estás pintando todo al cargar la pagina, lo que se ve y lo que no. Estás consumiendo recursos y tiempo de carga que no son necesarios.
+        En vez de eso solo deberías crear este primer div.main-container con todo su contenido y desde el js cambiar ese contenido.
+        Podríamos hacerlo así si fuese un contenido adicional, o que depende de alguna condicion, etc. pero aqui todo lo que pintas sustituye lo anterior. 
+        esa etiqueta scrip no te hace falta, ya tienes ese script importado en el head. 
+    -->
     <section id="vista-inicio" class="center-wrapper"><!--VISTA INICIO-->
         <h1 class="text-success">Welcome to the Film Quiz!</h1>
         <script src="https://cdn.lordicon.com/lordicon.js"></script><br><br>
@@ -21,6 +30,9 @@
         <button id="start-quiz" class="btn btn-outline-primary">Go to Quiz</button>
     </section>
 
+    <!-- CORRECCION:
+        ya hay un h1, no podemos poner más. la etiqueta script sobra por lo mismo que la anterior. 
+    -->
     <section id="vista-quiz" class="center-wrapper d-none"><!--VISTA QUIZ-->
         <h1 id="quiztitle" class="text-primary">It's Quiz Time...</h1>
         <h1 class="text-light">Juego de preguntas y respuestas múltiples</h1>
@@ -37,10 +49,16 @@
             <strong>Well done!</strong> You successfully completed this quiz.</a>
         </div>
         <div class="controls">
+            <!-- CORRECCION:
+                start-btn no funciona bien.  
+            -->
             <button id="start-btn" class="btn btn-primary btn-lg">Start</button> <!-- botón Start--><br><br>
             <button id="next-btn" class="btn btn-primary btn-lg">Next</button> <!-- botón Next-->
         </div>
     </section>
+<!-- CORRECCION:
+    tienes dos etiquetas de cierre de body 
+-->
 </body>
 <script src="main.js"></script>
 
